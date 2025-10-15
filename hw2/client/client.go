@@ -100,7 +100,7 @@ func (client *Client) HardOp() error {
 	}
 
 	startTime := time.Now()
-	fmt.Printf("Запрос отправлен в: %s\n", startTime.Format("15:04:05"))
+	fmt.Printf("Запрос отправлен в: %s\n", startTime.Format(time.TimeOnly))
 
 	response, err := client.httpClient.Do(requestWithContext)
 
@@ -108,7 +108,7 @@ func (client *Client) HardOp() error {
 		endTime := time.Now()
 		duration := endTime.Sub(startTime)
 
-		fmt.Printf("Запрос отменен в: %s\n", endTime.Format("15:04:05"))
+		fmt.Printf("Запрос отменен в: %s\n", endTime.Format(time.TimeOnly))
 		fmt.Printf("Время выполнения до отмены: %.2f секунд\n", duration.Seconds())
 		fmt.Println("Результат: Запрос отменен - превышено время ожидания (15 секунд)")
 		return fmt.Errorf("таймаут запроса: операция заняла более %.0f секунд", hardOpTimeout.Seconds())
@@ -121,7 +121,7 @@ func (client *Client) HardOp() error {
 	endTime := time.Now()
 	duration := endTime.Sub(startTime)
 
-	fmt.Printf("Запрос завершен в: %s\n", endTime.Format("15:04:05"))
+	fmt.Printf("Запрос завершен в: %s\n", endTime.Format(time.TimeOnly))
 	fmt.Printf("Время выполнения: %.2f секунд\n", duration.Seconds())
 	fmt.Printf("Статус: %d\n", response.StatusCode)
 	return nil

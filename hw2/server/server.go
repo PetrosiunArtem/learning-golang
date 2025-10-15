@@ -26,10 +26,12 @@ func Run() {
 
 	server := &http.Server{Addr: port, Handler: mux}
 
-	err := server.ListenAndServe()
-	if err != nil {
-		log.Fatal(err)
-	}
+	go func() {
+		err := server.ListenAndServe()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	osSignals := make(chan os.Signal, 1)
 	signal.Notify(osSignals, os.Interrupt, syscall.SIGTERM)
@@ -41,7 +43,7 @@ func Run() {
 	ctx, cancel := context.WithTimeout(context.Background(), serverShutdownTimeout)
 	defer cancel()
 
-	err = server.Shutdown(ctx)
+	err := server.Shutdown(ctx)
 	if err != nil {
 		log.Fatalf("Server forced to shutdown: %v", err)
 	}
